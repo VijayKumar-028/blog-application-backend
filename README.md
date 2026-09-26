@@ -25,6 +25,7 @@ Serializer
 Model / ORM
   ↓
 PostgreSQL
+```
 
 # Project Structure
 Blog Application/
