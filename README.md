@@ -28,6 +28,7 @@ PostgreSQL
 ```
 
 # Project Structure
+```text
 Blog Application/
 ├── frontend/
 └── backend/
@@ -35,7 +36,7 @@ Blog Application/
     ├── blog/
     ├── manage.py
     └── .env.example
-
+```
 #Purpose
 
 This project is being developed to understand how real-world backend applications are structured, built, and connected to a frontend.
