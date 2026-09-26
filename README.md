@@ -37,6 +37,6 @@ Blog Application/
     ├── manage.py
     └── .env.example
 ```
-#Purpose
+# Purpose
 
 This project is being developed to understand how real-world backend applications are structured, built, and connected to a frontend.
