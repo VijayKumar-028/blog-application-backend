@@ -1,5 +1,5 @@
-
-
+from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from django.db.models import QuerySet
 from rest_framework import serializers
 
@@ -41,3 +41,29 @@ class PostSerializer(serializers.ModelSerializer):
         model=Post
         fields="__all__"
 
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password=serializers.CharField(write_only=True)
+
+    def create(self, validated_data):
+        user=User.objects.create_user(**validated_data)
+        return user
+
+    def validate_password(self, value):
+        user = User(
+            username=self.initial_data.get("username", ""), # type: ignore
+            email=self.initial_data.get("email", ""), # type: ignore
+        )
+        validate_password(value, user=user)
+        return value
+
+    def validate_email(self, value):
+        mail=User.objects.filter(email__iexact=value).exists()
+
+        if mail:
+            raise serializers.ValidationError("This email is already exists.")
+        return value
+
+    class Meta:
+            model= User
+            fields=['username', 'email', 'password']

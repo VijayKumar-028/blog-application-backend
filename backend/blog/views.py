@@ -2,11 +2,13 @@ from django.shortcuts import get_object_or_404, render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer, RegisterSerializer
 
 # Create your views here.
 
@@ -64,10 +66,14 @@ from .serializers import PostSerializer
 
 # Class based using ModelViewSet
 class PostViewSet(ModelViewSet):
-    
+    permission_classes=[IsAuthenticatedOrReadOnly]
     filter_backends=[DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields=['category']
     search_fields=['title', 'content', 'category__name']
     ordering_fields=['created_at', 'title']
     queryset=Post.objects.select_related('category').prefetch_related('comments')
     serializer_class=PostSerializer
+
+class RegisterView(CreateAPIView):
+    serializer_class=RegisterSerializer
+    permission_classes=[AllowAny]
